@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Question from './Question.js';
+import styled from 'styled-components';
 import './App.css';
 
 class Home extends Component {
@@ -44,25 +44,70 @@ class Home extends Component {
 
   // lifecycle method
   async componentDidMount() {
+    const Question = styled.div`
+      border: 1px solid #eee;
+    `
+    const Info = styled.li`
+      display: inline-block;
+      margin-left: 10px;    
+    `;
+
+    const Image = styled.img`
+      width: 40px;
+      border-radius: 40px;
+      border: 2px solid red;
+    `;
+
+    const Name = styled.h1`
+      font-size: 18px;     
+    `;
+
+    const Date = styled.p`
+      font-size: 15px;
+      margin-top: -10px;
+    `;
+
+    const Title = styled.h1`
+      font-size: 20px;
+      margin: 0 0 10px 40px;
+    `;
+
+    const Text = styled.p`
+      margin: 0 0 10px 40px;
+    `;
+
     let res = await fetch('/get-help');
     let data = await res.json().catch(err => {
       console.log(err.stack)
     })
     console.log(data)
-    let questions = data.map(question => {
+    let questions = data.map((question, i) => {
       return (
-        <div className="Question" key={question.createAt}>
-          <div className="question-info">
-            <h1 className="question-username">{question.user.username}</h1>
-            <p className="question-createat">{question.createAt}</p>
-          </div>
-          <h1 className="Title" onClick={this.onClick}>{question.title}</h1>
+        <Question key={i}>
+          <Info>
+            <Image src={`./images/${question.user.username.split(' ').join('')}.jpg`} alt={question.user.username} />
+          </Info>
+          <Info>
+            <Name>
+              {question.user.username}
+            </Name>
+            <Date>
+              {question.createAt}
+            </Date>
+          </Info>
+          <Title>
+            {question.title}
+          </Title>
+          <Text>
+            {question.text.slice(0, 30)}
+          </Text>
+          {/* <h1 className="Title" onClick={this.onClick}>{question.title}</h1>
           <div className="slide">
             <p className="Text">{question.text}</p>
 
             <button className="btn" onClick={(e) => this.applyQuestion(e, question)}>Apply</button>
-          </div>
-        </div>
+          </div> */}
+        </Question>
       )
     });
     this.setState({questions: questions});

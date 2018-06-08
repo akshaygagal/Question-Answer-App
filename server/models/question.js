@@ -20,11 +20,11 @@ const QuestionSchema = Schema({
 	},
 	createAt: {
 		type: Date,
-		default: Date.now
+		default: new Date()
 	},
 	updateAt: {
 		type: Date,
-		default: Date.now
+		default: new Date()
 	}
 });
 
